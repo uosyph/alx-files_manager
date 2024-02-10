@@ -150,6 +150,62 @@ class FilesController {
 
     return res.send(filesArray);
   }
+
+  static async putPublish(req, res) {
+    const token = req.header('X-Token') || null;
+    if (!token) return res.status(401).send({ error: 'Unauthorized' });
+
+    const redisToken = await RedisClient.get(`auth_${token}`);
+    if (!redisToken) return res.status(401).send({ error: 'Unauthorized' });
+
+    const user = await DBClient.users.findOne({ _id: ObjectId(redisToken) });
+    if (!user) return res.status(401).send({ error: 'Unauthorized' });
+
+    const fileId = req.params.id || '';
+    let file = await DBClient.files.findOne({ _id: ObjectId(fileId), userId: user._id });
+    if (!file) return res.status(404).send({ error: 'Not found' });
+
+    await DBClient.files.update({ _id: ObjectId(fileId) }, { $set: { isPublic: true } });
+    file = await DBClient.files.findOne({ _id: ObjectId(fileId), userId: user._id });
+
+    return res.send({
+      id: file._id,
+      userId: file.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId,
+    });
+  }
+
+  static async putUnpublish(req, res) {
+    const token = req.header('X-Token') || null;
+    if (!token) return res.status(401).send({ error: 'Unauthorized' });
+
+    const redisToken = await RedisClient.get(`auth_${token}`);
+    if (!redisToken) return res.status(401).send({ error: 'Unauthorized' });
+
+    const user = await DBClient.users.findOne({ _id: ObjectId(redisToken) });
+    if (!user) return res.status(401).send({ error: 'Unauthorized' });
+
+    const fileId = req.params.id || '';
+    let file = await DBClient.files.findOne({ _id: ObjectId(fileId), userId: user._id });
+    if (!file) return res.status(404).send({ error: 'Not found' });
+
+    await DBClient.files.update(
+      { _id: ObjectId(fileId), userId: user._id }, { $set: { isPublic: false } },
+    );
+    file = await DBClient.files.findOne({ _id: ObjectId(fileId), userId: user._id });
+
+    return res.send({
+      id: file._id,
+      userId: file.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId,
+    });
+  }
 }
 
 module.exports = FilesController;
