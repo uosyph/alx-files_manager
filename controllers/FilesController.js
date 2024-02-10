@@ -104,8 +104,6 @@ class FilesController {
     if (!user) return res.status(401).send({ error: 'Unauthorized' });
 
     const fileId = req.params.id || '';
-    if (!fileId) return res.status(404).send({ error: 'Not found' });
-
     const file = await DBClient.files.findOne({ _id: ObjectId(fileId), userId: user._id });
     if (!file) return res.status(404).send({ error: 'Not found' });
 
