@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_PORT = process.env.DB_PORT || 27017;
@@ -42,12 +42,14 @@ class DBClient {
   }
 
   async filterUser(filters) {
+    // eslint-disable-next-line no-param-reassign
     if ('_id' in filters) filters._id = ObjectId(filters._id);
     return this.users.findOne(filters);
   }
 
   async filterFiles(filters) {
     const idFilters = ['_id', 'userId', 'parentId'].filter((prop) => prop in filters && filters[prop] !== '0');
+    // eslint-disable-next-line no-param-reassign
     idFilters.forEach((i) => { filters[i] = ObjectId(filters[i]); });
     return this.files.findOne(filters);
   }
