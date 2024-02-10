@@ -1,8 +1,10 @@
 {
   "name": "files_manager",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A File Management API.",
+  "main": "server.js",
+  "author": "Yousef Saeed",
+  "license": "ISC",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
     "check-lint": "lint [0-9]*.js",
@@ -11,8 +13,6 @@
     "dev": "nodemon --exec babel-node --presets @babel/preset-env",
     "test": "./node_modules/.bin/mocha --require @babel/register --exit"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bull": "^3.16.0",
     "chai-http": "^4.3.0",
@@ -40,5 +40,9 @@
     "eslint-plugin-jest": "^22.17.0",
     "request": "^2.88.0",
     "sinon": "^7.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uosyph/alx-files_manager"
   }
 }
