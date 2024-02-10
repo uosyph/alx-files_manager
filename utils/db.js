@@ -32,6 +32,25 @@ class DBClient {
     const fileCount = this.files.countDocuments();
     return fileCount;
   }
+
+  async userExists(email) {
+    return this.users.findOne({ email });
+  }
+
+  async newUser(email, passwordHash) {
+    return this.users.insertOne({ email, passwordHash });
+  }
+
+  async filterUser(filters) {
+    if ('_id' in filters) filters._id = ObjectId(filters._id);
+    return this.users.findOne(filters);
+  }
+
+  async filterFiles(filters) {
+    const idFilters = ['_id', 'userId', 'parentId'].filter((prop) => prop in filters && filters[prop] !== '0');
+    idFilters.forEach((i) => { filters[i] = ObjectId(filters[i]); });
+    return this.files.findOne(filters);
+  }
 }
 
 const dbClient = new DBClient();
