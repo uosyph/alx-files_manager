@@ -1,22 +1,21 @@
-import redisClient from "../../utils/redis";
+import redisClient from '../../utils/redis';
 
 const assert = require('assert');
-const client = redisClient;
 
-describe('Test the Redis client utility', () => {
-  it('Redis client should be alive', () => {
-    assert.equal(true, client.isAlive());
+describe('test the Redis client utility', () => {
+  it('redis client should be alive', () => {
+    assert.equal(true, redisClient.isAlive());
   });
 
-  it('Test get/set methods', async () => {
-    await client.set('key', 'value', 5);
-    const value = await client.get('key');
-    assert.equal(await client.get('key'), 'value');
+  it('test get/set methods', async () => {
+    await redisClient.set('key', 'value', 5);
+    const value = await redisClient.get('key');
+    assert.equal(value, 'value');
   });
 
-  it('Test del method', async () => {
-    await client.del('key');
-    const value = await client.get('key');
+  it('test del method', async () => {
+    await redisClient.del('key');
+    const value = await redisClient.get('key');
     assert.equal(value, undefined);
   });
 });
