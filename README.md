@@ -11,12 +11,12 @@ It includes features like file uploading, downloading, and management using Node
 
 ## Table of Contents
 
--   [About](#about)
+-   [Overview](#overview)
 -   [Features](#features)
 -   [Installation](#installation)
 -   [Author](#author)
 
-## About
+## Overview
 
 The ALX Files Manager project focuses on building a scalable and efficient file management API.
 Utilizing technologies like Node.js for the server, Redis for caching, and MongoDB for data storage, this project provides a robust solution for handling file operations in a web application context.
